@@ -68,6 +68,8 @@ app.post('/add-food-item', (req, res) => {
 
 })
 
+// get a food item by id
+
 app.get('/food-item-by-id', (req, res) => {
 
     // read the id from the query params
@@ -90,6 +92,8 @@ app.get('/food-item-by-id', (req, res) => {
     })
 })
 
+// delete a food item by id
+
 app.get('/delete-food-item-by-id', (req, res) => {
     const id = req.query.id;
 
@@ -110,6 +114,25 @@ app.get('/delete-food-item-by-id', (req, res) => {
     })
 })
 
+// get all food items by category
+
+app.get('/food-item-by-category', (req, res) => {
+    const category = req.query.category;
+
+    const temp = [];
+
+    db.forEach((item) => {
+        if (item.category === category) {
+            temp.push(item);
+        }
+    })
+
+    res.json({
+        success: true,
+        data: temp,
+        message: `food items for ${category} fetched successfully`
+    })
+})
 
 
 
