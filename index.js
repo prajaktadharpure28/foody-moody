@@ -8,7 +8,7 @@ const db = [{
     title: 'Idli',
     price: 10,
     category: 'breakfast'
-}, 
+},
 {
     id: 2,
     title: 'Dosa',
@@ -37,22 +37,80 @@ app.get('/all-food-item', (req, res) => {
 app.post('/add-food-item', (req, res) => {
     const { id, title, price, category } = req.body;
 
-const newItem = {
-    id: id,
-    title: title,
-    price: price,
-    category: category
-}   
+    const newItem = {
+        id: id,
+        title: title,
+        price: price,
+        category: category
+    }
 
-db.push(newItem);
+    // check if the item already exists with the same id
 
-res.json({
-    success: true,
-    data: newItem,
-    message: 'New food item added successfully'
+    db.forEach((item) => {
+        if (item.id === id) {
+            return res.json({
+                success: false,
+                data: null,
+                message: 'Item already exists'
+            })
+        }
+    })
+
+    
+
+    db.push(newItem);
+
+    res.json({
+        success: true,
+        data: newItem,
+        message: 'New food item added successfully'
+    })
+
 })
 
+app.get('/food-item-by-id', (req, res) => {
+
+    // read the id from the query params
+
+    const id = req.query.id;
+
+    db.forEach((item) => {
+        if (item.id == id) {
+            return res.json({
+                success: true,
+                data: item,
+                message: 'Food item fetched successfully'
+            })
+        }
+    })
+    res.json({
+        success: false,
+        data: null,
+        message: 'Food item not found'
+    })
 })
+
+app.get('/delete-food-item-by-id', (req, res) => {
+    const id = req.query.id;
+
+    db.forEach((item, index) => {
+        if (item.id == id) {
+            db.splice(index, 1);
+            return res.json({
+                success: true,
+                data: db,
+                message: 'Food item deleted successfully'
+            })
+        }
+    })
+    res.json({
+        success: false,
+        data: null,
+        message: 'Food item not found'
+    })
+})
+
+
 
 
 
