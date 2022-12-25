@@ -1,29 +1,19 @@
-import React, {useState} from 'react'
-import FoodItemCard from '../../component/FoodItemCard/FoodItemCard'
+import React, {useState, useEffect} from 'react'
+import FoodItemCard from '../../components/FoodItemCard/FoodItemCard'
+
 import "./Show.css"
 
 function Show() {
+  const [foodItems, setFoodItems] = useState([])
 
-    const [foodItems, setFoodItems] = useState([
-      {
-        id: 1,
-        title: 'Idli',
-        price: 10,
-        category: 'breakfast'
-    },
-    {
-        id: 2,
-        title: 'Dosa',
-        price: 20,
-        category: 'breakfast'
-    },
-    {
-        id: 3,
-        title: 'utthapam',
-        price: 30,
-        category: 'breakfast'
-    }
-    ])
+  async function loadData(){
+    // load data from API
+    const response = await axios.get('/all-food-items')
+  }
+
+  useEffect(() => {
+    loadData()
+  }, [])
 
   return (
     <div>
